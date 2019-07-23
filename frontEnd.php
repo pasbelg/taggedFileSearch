@@ -33,7 +33,6 @@
 </div>
 </body>
 </html>
-ich bin ein test
 <?php
 
 ?>
