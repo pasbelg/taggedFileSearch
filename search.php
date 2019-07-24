@@ -1,8 +1,8 @@
 <?php
 //error_reporting(E_ALL);
 $input = '%'.$_REQUEST['searchPhrase'].'%';
-//$test = 'files';
-$sql = 'select file from files a, tags b, tagging c where c.tagID = b.tagID AND a.fileID = c.fileID AND b.tag like :input;';
+//$sql = 'select file from files a, tags b, tagging c where c.tagID = b.tagID AND a.fileID = c.fileID AND a.file like :input;';
+$sql = 'select file from files where file like :input;';
 //$sql = 'select * from files where fileID = :input;';
 $dir = 'sqlite:search.db';
 $html = '';

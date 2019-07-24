@@ -5,7 +5,7 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <script>
-        function showResult(str) {
+        function showResult(str) { // Entfernt oder zeigt das Suchergebnis an indem search.php aufgerufen wird
           if (str.length==0) { 
             $('#searchResultBox').hide();
             return;
