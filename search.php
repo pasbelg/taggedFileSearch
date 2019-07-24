@@ -17,7 +17,7 @@ if (isset($_REQUEST['searchPhrase'])) {
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
     foreach($stmt->fetchAll() as $v) { 
         $result = implode($v);
-        $html .= '<p>'.$result.'</p>';
+        $html .= '<p><a href="'.dirname($result).'">'.basename($result).'</a><br><br></p>';
     }
 }
 
