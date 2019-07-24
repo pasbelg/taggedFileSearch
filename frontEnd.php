@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
 <script>
         function showResult(str) {
           if (str.length==0) { 
-            
             $('#searchResultBox').hide();
             return;
           }
@@ -33,7 +36,6 @@
 </div>
 </body>
 </html>
-grummel grummel
 <?php
 
 ?>

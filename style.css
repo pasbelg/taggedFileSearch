@@ -1,0 +1,11 @@
+#searchResultBox {
+    position: absolute;
+    z-index: 100;
+    left: auto;
+    margin-left: 20px; 
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+    width: 300px;
+    display: none;   
+}
