@@ -18,7 +18,7 @@ if (isset($_REQUEST['searchPhrase'])) {
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
     foreach($stmt->fetchAll() as $v) { 
         $result = implode($v);
-        $html .= '<p><a href="'.dirname($result).'">'.basename($result).'</a><br><br></p>';
+        $html .= '<a href="'.$result.'"><label>'.basename($result, '.pdf').'</label></a>';
     }
 }
 if (isset($_REQUEST['searchPhrase'])) {
@@ -31,7 +31,7 @@ if (isset($_REQUEST['searchPhrase'])) {
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
     foreach($stmt->fetchAll() as $v) { 
         $result = implode($v);
-        $html .= '<p><a href="'.dirname($result).'">'.basename($result).'</a><br><br></p>';
+        $html .= '<a href="'.$result.'">'.basename($result, '.pdf').'</a>';
     }
 }
 

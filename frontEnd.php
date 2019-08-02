@@ -32,19 +32,12 @@
 
 
 
-<div id="myOverlay" class="overlay">
-  <div class="overlay-content">
     <input class="" id="searchForm" type="text" placeholder="Materialsuche..." aria-label="Search" onkeyup="showResult(this.value)" autocomplete=off>
-      <button onclick="showResult(this.value)"><i class="fa fa-search"></i></button>
-<br>
       <div class="" id="searchResultBox">
             <div id="searchResult">
             </div>
         </div>
   </div>
-</div>
-
-
 
 </body>
 
