@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 //General Functions
 function existenceCheck($table, $column, $value){
-    $sqlCheck = 'select '.$table.' from '.$column.' where file = :check;';
+    $sqlCheck = 'select '.$column.' from '.$table.' where '.$column.' = :check;';
     $conn  = new PDO('sqlite:search.db') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $stmt = $conn->prepare($sqlCheck);
@@ -24,7 +24,7 @@ function addFilesToDB($file){
     $sqlAdd = 'INSERT INTO files (file) VALUEs (:filePath);';
     $conn  = new PDO('sqlite:search.db') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    if (existenceCheck('file', 'files', $file)) { 
+    if (existenceCheck('files', 'file', $file)) { 
         echo $file . " exisiert schon in der Datenbank<br>";
     } else{
         try{
@@ -53,9 +53,15 @@ function scanFilesAndAdd($dir){
 }
 
 //Tag Functions
-function pathAnalyser($file){
-    
-
+function pathTagger($file){
+    $pathParts = explode('/', dirname($file));
+    foreach($pathParts as $pathPart){
+        if (existenceCheck('tags', 'tag', $pathPart){
+            echo 'Tag '.$pathPart.' exisiert schon in der Datenbank<br>';
+        } else {
+            echo $pathPart . ' kann als Tag hinzugefügt werden<br>';
+        }
+    }
 }
 
 ?>
