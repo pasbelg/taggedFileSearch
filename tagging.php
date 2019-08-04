@@ -1,7 +1,11 @@
 <?php
 require('functions/dbFunctions.php');
 
-//pathTagger('files/individuelle Lernförderung/Mathe/M_098_I_LF_Funktionen_Linear_Parabeln.pdf');
+//pathTagCreator();
+//print("<pre>".print_r(getFiles(),true)."</pre>");
+//print("<pre>".print_r(getTags(),true)."</pre>");
+pathTagger();
+//scanFilesAndAdd('files')
 
-scanFilesAndAdd('files')
+//var_dump(existenceCheck('files', 'file', 'files/individuelle Lernförderung/Mathe/M_098_I_LF_Funktionen_Linear_Parabeln.pdf'));
 ?>
