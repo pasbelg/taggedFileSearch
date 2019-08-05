@@ -24,10 +24,11 @@ function getTags(){
     return $fileList;
 }
 
+
 function existenceCheck($table, $column, $value, $value1){
     $conn  = new PDO('sqlite:search.db') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    if(is_null($value2)) {
+    if(is_null($value1)) {
         $sqlCheck = 'select '.$column.' from '.$table.' where '.$column.' = :check;';
         $stmt = $conn->prepare($sqlCheck);
         $stmt->bindParam(':check', $value, PDO::PARAM_STR);
@@ -45,9 +46,6 @@ function existenceCheck($table, $column, $value, $value1){
     } else {
         $result = false;
     }
-    
-    
-    
     return $result;
 }
 
@@ -135,16 +133,19 @@ function pathTagger(){
 
     foreach($fileList as $fileID => $file){
         foreach($tagList as $tagID => $tag){
-            if(strpos($file, $tag) AND !existenceCheck('tagging', 'fileID', $fileID, $tagID)){
-                //echo '<p> ' . $fileID .': ' . $file . '<br> mit der ID ' . $fileID .' <br>enthält den Tag ' . $tag . ' mit der ID ' . $tagID . '<p>';
-                echo 'tag muss noch verknüpft werden<br>';
-                try{
-                    $stmt = $conn->prepare($sqlAdd);
-                    $stmt->bindParam(':fileID', $fileID, PDO::PARAM_INT);
-                    $stmt->bindParam(':tagID', $tagID, PDO::PARAM_INT);
-                    $stmt->execute();
-                }catch(PDOException $e) {
-                    echo "Error: " . $e->getMessage();
+            if(strpos($file, $tag)){
+                if (!existenceCheck('tagging', 'fileID', $fileID, $tagID)){
+                    //echo 'tag muss noch verknüpft werden<br>';
+                    try{
+                        $stmt = $conn->prepare($sqlAdd);
+                        $stmt->bindParam(':fileID', $fileID, PDO::PARAM_INT);
+                        $stmt->bindParam(':tagID', $tagID, PDO::PARAM_INT);
+                        $stmt->execute();
+                    }catch(PDOException $e) {
+                        echo "Error: " . $e->getMessage();
+                    }
+                } else {
+                    echo 'tag ist schon verknüpft <br>';
                 }
             } else {
                 echo 'tag ist schon verknüpft <br>';
