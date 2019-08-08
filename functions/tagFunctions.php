@@ -1,33 +1,69 @@
 <?php
 error_reporting(E_ALL);
 require_once('generalFunctions.php');
+require_once('paths.php');
 if(isset($_POST['action'])){
     addTag($_POST['fileID'], $_POST['action']);
 }
-
 function addTag($fileID, $input){
-    $tagExists = existenceCheck('tags', 'tag', $input, NULL);
-    if($tagExists){
-        $tagsPerFile = array();
-        /* Geht nicht, kA warum -.-
-        $db = new SQLite3('../search.db');
-        $res = $db->query('select tagID from tags where tag = '.$input.';');
+    echo $input;
+    $db = new SQLite3('../search.db');
+    $res = $db->query('select tagID from tags where tag = "'.$input.'";');
         while ($row = $res->fetchArray()) {
-           $tagsPerFile[] = $row['tag'];
+           $tagID = $row['tagID'];
         }
-        */
-        echo 'Tag ' . $input . ' existiert bereits und hat die ID' . $tagID;
+    $db->close();
+    $tagExists = existenceCheck('tags', 'tag', $input, NULL);
+    $tagConExists = existenceCheck('tagging', 'fileID', $fileID, $tagID);
+    var_dump($tagConExists);
+    if($tagExists AND $tagConExists){
+        echo 'Tag ' . $input . ' ist bereits für die Datei angelegt';
+        //Fehler: Wenn Tag existiert aber Verbindung nicht besteht passiert gar ni
+    } else if ($tagExists and !$tagConExists){
+        //Add Tag-File-Connection
+        $conn  = new PDO('sqlite:../search.db') or die("cannot open the database");
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
+        $sqlAddCon = 'INSERT INTO tagging (fileID, tagID) VALUES (:fileID, :tagID);';
+            try{
+                $stmt = $conn->prepare($sqlAddCon);
+                $stmt->bindParam(':fileID', $fileID, PDO::PARAM_INT);
+                $stmt->bindParam(':tagID', $tagID, PDO::PARAM_INT);
+                $stmt->execute();
+            }catch(PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }
+            $conn = NULL;
     } else {
-        echo 'Tag ' . $input . ' wird für die Datei mit der ID ' . $fileID . ' hinzugefügt';
-        /*
-        $sqlAddTag = 'INSERT INTO tagging (fileID, tagID) VALUES (:fileID, :tagID);';
-        $conn  = new PDO('sqlite:search.db') or die("cannot open the database");
-        $sqlAddTagCon = 'INSERT INTO tagging (fileID, tagID) VALUES (:fileID, :tagID);';
+        //Add Tag to Tag-Table
+        $sqlAddTag = 'INSERT INTO tags (tag) VALUES (:tag);';
+        $conn  = new PDO('sqlite:../search.db') or die("cannot open the database");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    */
+        try{
+            $stmt = $conn->prepare($sqlAddTag);
+            $stmt->bindParam(':tag', $input, PDO::PARAM_STR);
+            $stmt->execute();
+        }catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        //Add Tag-File-Connection
+        if (existenceCheck('tags', 'tag', $input, NULL)){
+            $db = new SQLite3('../search.db');
+            $res = $db->query('select tagID from tags where tag = "'.$input.'";');
+            while ($row = $res->fetchArray()) {
+               $tagID = $row['tagID'];
+            }
+            $sqlAddCon = 'INSERT INTO tagging (fileID, tagID) VALUES (:fileID, :tagID);';
+            try{
+                $stmt = $conn->prepare($sqlAddCon);
+                $stmt->bindParam(':fileID', $fileID, PDO::PARAM_INT);
+                $stmt->bindParam(':tagID', $tagID, PDO::PARAM_INT);
+                $stmt->execute();
+            }catch(PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }
+            $conn = NULL;
+        }
     }
-
-    //$tagConExists = existenceCheck('tagging', 'fileID', $fileID, $tagID); //Später wenn tagID abgerufen wurde
 }
 
 function pathTagCreator(){

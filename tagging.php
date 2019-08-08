@@ -36,7 +36,6 @@ $tagList = getTags();
           data: {fileID: id, action: input},
          type: 'post',
          success: function(output) {
-            alert(output);
             window.location.reload();
           }
         });
