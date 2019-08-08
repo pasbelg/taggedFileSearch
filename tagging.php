@@ -53,7 +53,7 @@ $tagList = getTags();
   <?php
     foreach($fileList as $fileID => $file){
       echo '<tr>
-              <td>'.basename($file, '.pdf').'</td>';
+              <td class="fileCell">'.basename($file, '.pdf').'</td>';
       $tagsPerFile = array();
       $db = new SQLite3('search.db');
       $res = $db->query('select tag from files, tags, tagging where files.fileID = tagging.fileID AND tags.tagID = tagging.tagID AND tagging.fileID = '.$fileID.';');
@@ -61,10 +61,10 @@ $tagList = getTags();
          $tagsPerFile[] = $row['tag'];
       }
     echo '<td>'.implode(", ", $tagsPerFile).'</td>';
-    echo '<td>
-    <input class="addButton" type="button" onclick="showHideInput('.$fileID.')" >  
-    <input class="tagInput'.$fileID.'" style="visibility:hidden;" type="text" name="nm" >
-    <input class="confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="addTag('.$fileID.')" >  
+    echo '<td class="editCell">
+    <input class="addButton" type="button" onclick="showHideInput('.$fileID.')" value="+">
+    <input class="tagInput tagInput'.$fileID.'" style="visibility:hidden;"  type="text" name="nm" >
+    <input class="confirmButton confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="addTag('.$fileID.')" >  
     </td>';
     $db->close();
     }
