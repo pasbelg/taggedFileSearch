@@ -4,7 +4,6 @@ $input = '%'.$_REQUEST['searchPhrase'].'%';
 //$sql = 'select file from files a, tags b, tagging c where c.tagID = b.tagID AND a.fileID = c.fileID AND a.file like :input;';
 $sqlFile = 'select file from files where file like :input;';
 $sqlTag = 'select file from files a, tags b, tagging c where c.tagID = b.tagID AND a.fileID = c.fileID AND b.tag like :input;';
-//$sql = 'select * from files where fileID = :input;';
 $dir = 'sqlite:search.db';
 $html = '';
 
@@ -18,7 +17,10 @@ if (isset($_REQUEST['searchPhrase'])) {
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
     foreach($stmt->fetchAll() as $v) { 
         $result = implode($v);
-        $html .= '<a href="'.$result.'"><label>'.basename($result, '.pdf').'</label></a>';
+        if (!strpos($html, $result)){
+            $html .= '<a href="'.$result.'"><label>'.basename($result, '.pdf').'</label></a>';
+        }
+        
     }
 }
 if (isset($_REQUEST['searchPhrase'])) {
@@ -31,10 +33,11 @@ if (isset($_REQUEST['searchPhrase'])) {
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
     foreach($stmt->fetchAll() as $v) { 
         $result = implode($v);
-        $html .= '<a href="'.$result.'">'.basename($result, '.pdf').'</a>';
-    }
+        if (!strpos($html, $result)){
+            $html .= '<a href="'.$result.'"><label>'.basename($result, '.pdf').'</label></a>';
+        }
 }
-
+}
 
 if($html == '') {
     echo "<p>Leider nichts gefunden.</p>";
@@ -42,10 +45,10 @@ if($html == '') {
 else {
     echo $html;
 }
+?>
 
 
-
-
+<?php
 /*
 
 catch(PDOException $e) {
@@ -58,11 +61,11 @@ foreach ($dbh->query($sql) as $row)
     echo $row[0];
 }
 */
-$conn = null; //close DB Connection
+//$conn = null; //close DB Connection
 
 //https://werner-zenk.de/scripte/sqlite_datenbank.php
 
 //echo '<div style="width:100px; height100px; background:black; color:white;">'.$input.'</div>';
 
-//print_r();
+//print_r();*/
 ?>
