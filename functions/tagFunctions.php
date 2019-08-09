@@ -2,11 +2,10 @@
 error_reporting(E_ALL);
 require_once('generalFunctions.php');
 require_once('paths.php');
-if(isset($_POST['action'])){
+if(isset($_POST['action']) AND !empty($_POST['action'])){
     addTag($_POST['fileID'], $_POST['action']);
 }
 function addTag($fileID, $input){
-    echo $input;
     $db = new SQLite3('../search.db');
     $res = $db->query('select tagID from tags where tag = "'.$input.'";');
         while ($row = $res->fetchArray()) {
@@ -15,7 +14,6 @@ function addTag($fileID, $input){
     $db->close();
     $tagExists = existenceCheck('tags', 'tag', $input, NULL);
     $tagConExists = existenceCheck('tagging', 'fileID', $fileID, $tagID);
-    var_dump($tagConExists);
     if($tagExists AND $tagConExists){
         echo 'Tag ' . $input . ' ist bereits für die Datei angelegt';
         //Fehler: Wenn Tag existiert aber Verbindung nicht besteht passiert gar ni
