@@ -82,11 +82,9 @@ $tagList = getTags();
     <input class="greenButton" type="button" onclick="showHideDropdown('.$fileID.')" value="-">
     <input class="greenButton" type="button" onclick="showHideInput('.$fileID.')" value="+">
     <input class="tagInput'.$fileID.'" style="visibility:hidden;"  type="text" name="nm">
-
     <select class="tagDropdown'.$fileID.'" style="visibility:hidden;">
     '.$tagOption.'
     </select>
-
     <input class="greenButton confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="🗸">  
     </td>';
     $db->close();
