@@ -29,17 +29,37 @@ $tagList = getTags();
           document.getElementsByClassName("confirmButton" + id)[0].style.visibility = "visible";
         }
       }
-      function addTag(id){
-        input = document.getElementsByClassName("tagInput" + id)[0].value;
-        $.ajax({
-          url: 'functions/tagFunctions.php',
-          data: {fileID: id, action: input},
-         type: 'post',
-         success: function(output) {
-           alert(output);
-            window.location.reload();
+      function showHideDropdown(id) {
+        inputVisibility = document.getElementsByClassName("tagDropdown" + id)[0];
+        if (window.getComputedStyle(inputVisibility).visibility === "hidden"){
+          document.getElementsByClassName("tagDropdown" + id)[0].style.visibility = "visible";
+          document.getElementsByClassName("addButton")[0].style.visibility = "hidden";
+          document.getElementsByClassName("confirmButton" + id)[0].style.visibility = "visible";
+        }
+      }
+      function editTag(id){
+          dropDown = document.getElementsByClassName("tagDropdown" + id)[0]
+          newTag = document.getElementsByClassName("tagInput" + id)[0].value;
+          existentTag = dropDown.options[dropDown.selectedIndex].text;
+          if(newTag){
+          $.ajax({
+            url: 'functions/tagFunctions.php',
+            data: {fileID: id, tag: newTag, action: 'add'},
+            type: 'post',
+            success: function(output) {
+              window.location.reload();
+            }
+          });
+          }else{
+            $.ajax({
+            url: 'functions/tagFunctions.php',
+            data: {fileID: id, tag: existentTag, action: 'rm'},
+            type: 'post',
+            success: function(output) {
+              window.location.reload();
+            }
+          });
           }
-        });
       }
     </script>
   </head>
@@ -53,6 +73,7 @@ $tagList = getTags();
     </tr>
   <?php
     foreach($fileList as $fileID => $file){
+      $tagOption = "";
       echo '<tr>
               <td class="fileCell">'.basename($file, '.pdf').'</td>';
       $tagsPerFile = array();
@@ -62,10 +83,19 @@ $tagList = getTags();
          $tagsPerFile[] = $row['tag'];
       }
     echo '<td>'.implode(", ", $tagsPerFile).'</td>';
+    foreach($tagsPerFile as $tag){
+      $tagOption .= '<option value="">'.$tag.'</option>';
+    }
     echo '<td class="editCell">
+    <input class="addButton" type="button" onclick="showHideDropdown('.$fileID.')" value="-">
     <input class="addButton" type="button" onclick="showHideInput('.$fileID.')" value="+">
-    <input class="tagInput tagInput'.$fileID.'" style="visibility:hidden;"  type="text" name="nm" >
-    <input class="confirmButton confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="addTag('.$fileID.')" >  
+    <input class="tagInput'.$fileID.'" style="visibility:hidden;"  type="text" name="nm">
+
+    <select class="tagDropdown'.$fileID.'" style="visibility:hidden;">
+    '.$tagOption.'
+    </select>
+
+    <input class="addButton confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="✓">  
     </td>';
     $db->close();
     }
@@ -74,3 +104,4 @@ $tagList = getTags();
     </div>
   </body>
 </html>
+'..'
