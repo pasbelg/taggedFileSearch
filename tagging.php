@@ -104,4 +104,3 @@ $tagList = getTags();
     </div>
   </body>
 </html>
-'..'
