@@ -87,7 +87,7 @@ $tagList = getTags();
     '.$tagOption.'
     </select>
 
-    <input class="greenButton confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="✓">  
+    <input class="greenButton confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="🗸">  
     </td>';
     $db->close();
     }
