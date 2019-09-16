@@ -2,8 +2,12 @@
 error_reporting(E_ALL);
 require_once('generalFunctions.php');
 require_once('paths.php');
-if(isset($_POST['action']) AND !empty($_POST['action'])){
-    addTag($_POST['fileID'], $_POST['action']);
+if(isset($_POST['tag']) AND !empty($_POST['tag'])){
+    if($_POST['action'] == "add"){
+        addTag($_POST['fileID'], $_POST['tag']);
+    }else{
+        rmTag($_POST['fileID'], $_POST['tag']);
+    }
 }
 function addTag($fileID, $input){
     $db = new SQLite3('../search.db');
@@ -46,10 +50,11 @@ function addTag($fileID, $input){
         //Add Tag-File-Connection
         if (existenceCheck('tags', 'tag', $input, NULL)){
             $db = new SQLite3('../search.db');
-            $res = $db->query('select tagID from tags where tag = "'.$input.'";');
+            $res = $db->query('SELECT tagID FROM tags WHERE tag = "'.$input.'";');
             while ($row = $res->fetchArray()) {
                $tagID = $row['tagID'];
             }
+            $db->close();
             $sqlAddCon = 'INSERT INTO tagging (fileID, tagID) VALUES (:fileID, :tagID);';
             try{
                 $stmt = $conn->prepare($sqlAddCon);
@@ -63,7 +68,27 @@ function addTag($fileID, $input){
         }
     }
 }
-
+function rmTag($fileID, $input){
+    $db = new SQLite3('../search.db');
+    $res = $db->query('SELECT tagID FROM tags WHERE tag = "'.$input.'";');
+    while ($row = $res->fetchArray()) {
+       $tagID = $row['tagID'];
+    }
+    $db->close();
+    $sqlAddCon = 'DELETE FROM tagging WHERE fileID = :fileID AND tagID = :tagID;';
+    $conn  = new PDO('sqlite:../search.db') or die("cannot open the database");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
+    try{
+        $stmt = $conn->prepare($sqlAddCon);
+        $stmt->bindParam(':fileID', $fileID, PDO::PARAM_INT);
+        $stmt->bindParam(':tagID', $tagID, PDO::PARAM_INT);
+        $stmt->execute();
+    }catch(PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+    $conn = NULL;
+    echo 'Tag ' . $input . ' wurde erfolgreich gelöscht';
+}
 function pathTagCreator(){
     
     $fileList = getFiles();
