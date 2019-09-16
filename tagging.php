@@ -1,14 +1,6 @@
 <?php
-
 require_once('functions/generalFunctions.php');
 require_once('functions/tagFunctions.php');
-//pathTagCreator();
-//print("<pre>".print_r(getFiles(),true)."</pre>");
-//print("<pre>".print_r(getTags(),true)."</pre>");
-//pathTagger();
-//scanFilesAndAdd('files')
-
-//var_dump(existenceCheck('files', 'file', 'files/individuelle Lernförderung/Mathe/M_098_I_LF_Funktionen_Linear_Parabeln.pdf'));
 $fileList = getFiles();
 $tagList = getTags();
 ?>
@@ -19,13 +11,13 @@ $tagList = getTags();
   <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tags erstellen</title>
+    <title>Tags bearbeiten</title>
     <script>
       function showHideInput(id) {
         inputVisibility = document.getElementsByClassName("tagInput" + id)[0];
         if (window.getComputedStyle(inputVisibility).visibility === "hidden"){
           document.getElementsByClassName("tagInput" + id)[0].style.visibility = "visible";
-          document.getElementsByClassName("addButton")[0].style.visibility = "hidden";
+          document.getElementsByClassName("greenButton")[0].style.visibility = "hidden";
           document.getElementsByClassName("confirmButton" + id)[0].style.visibility = "visible";
         }
       }
@@ -33,7 +25,7 @@ $tagList = getTags();
         inputVisibility = document.getElementsByClassName("tagDropdown" + id)[0];
         if (window.getComputedStyle(inputVisibility).visibility === "hidden"){
           document.getElementsByClassName("tagDropdown" + id)[0].style.visibility = "visible";
-          document.getElementsByClassName("addButton")[0].style.visibility = "hidden";
+          document.getElementsByClassName("greenButton")[0].style.visibility = "hidden";
           document.getElementsByClassName("confirmButton" + id)[0].style.visibility = "visible";
         }
       }
@@ -69,7 +61,7 @@ $tagList = getTags();
     <tr>
       <th>Datei</th>
       <th>bestehende Tags</th>
-      <th>Tag hinzufügen</th>
+      <th>Tags bearbeiten</th>
     </tr>
   <?php
     foreach($fileList as $fileID => $file){
@@ -87,15 +79,15 @@ $tagList = getTags();
       $tagOption .= '<option value="">'.$tag.'</option>';
     }
     echo '<td class="editCell">
-    <input class="addButton" type="button" onclick="showHideDropdown('.$fileID.')" value="-">
-    <input class="addButton" type="button" onclick="showHideInput('.$fileID.')" value="+">
+    <input class="greenButton" type="button" onclick="showHideDropdown('.$fileID.')" value="-">
+    <input class="greenButton" type="button" onclick="showHideInput('.$fileID.')" value="+">
     <input class="tagInput'.$fileID.'" style="visibility:hidden;"  type="text" name="nm">
 
     <select class="tagDropdown'.$fileID.'" style="visibility:hidden;">
     '.$tagOption.'
     </select>
 
-    <input class="addButton confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="✓">  
+    <input class="greenButton confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="✓">  
     </td>';
     $db->close();
     }
