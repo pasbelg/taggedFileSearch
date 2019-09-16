@@ -4,8 +4,8 @@
         -Links zur Tageditierung
     c) Suchfeld verschönern
      
-2. Möglichkeit zum löschen von Tags hinzufügen:
-    Das löschen eines Tags von einer Datei sollte nur die Datei-Tag verbindung löschen. Der Tag sollte vorerst bestehen bleiben und kann dann später bereinigt werden.
+2. Möglichkeit zum löschen von Tags hinzufügen: ✔
+    Das löschen eines Tags von einer Datei sollte nur die Datei-Tag verbindung löschen. Der Tag sollte vorerst bestehen bleiben und kann dann später bereinigt werden. ✔
 3. Tagging Tabelle stylen
     a) Tageingabefelder schöner machen
     b) Tabelle an sich schöner machen
