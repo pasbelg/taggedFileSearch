@@ -31,19 +31,19 @@ $tagList = getTags();
         }
       }
       function editTag(id){
-          dropDown = document.getElementsByClassName("tagDropdown" + id)[0]
-          newTag = document.getElementsByClassName("tagInput" + id)[0].value;
-          existentTag = dropDown.options[dropDown.selectedIndex].text;
-          if(newTag){
+          dropDown = document.getElementsByClassName("tagDropdown" + id)[0];
+          if(document.getElementsByClassName("tagInput" + id)[0].value){
+          newTag =  document.getElementsByClassName("tagInput" + id)[0].value;
           $.ajax({
             url: 'functions/tagFunctions.php',
             data: {fileID: id, tag: newTag, action: 'add'},
             type: 'post',
             success: function(output) {
-              window.location.reload();
+              window.location.reload();s
             }
           });
           }else{
+            existentTag = dropDown.options[dropDown.selectedIndex].text;
             $.ajax({
             url: 'functions/tagFunctions.php',
             data: {fileID: id, tag: existentTag, action: 'rm'},
