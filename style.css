@@ -90,18 +90,29 @@ input[type=text]:focus {
   width: 90%;
   padding: 10px;
 }
+
 #tagTable{
   width: 100%;
-}
-#tagTable td{
   border: 1px solid black;
-  width: 100px;
-  max-width: 100px;
-  white-space: pre-wrap;        /* css */
-  white-space: -moz-pre-wrap;   /* Mozilla */
-  white-space: -pre-wrap;       /* Chrome*/
-  white-space: -o-pre-wrap;     /* Opera 7 */
-  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#tagTable td, #tagTable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#tagTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#tagTable tr:hover {background-color: #ddd;}
+
+#tagTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgba(195, 1, 10, 1);
+  color: white;
 }
 
 .editCell{
@@ -112,24 +123,31 @@ input[type=text]:focus {
 }
 .tagInput{
   display:block;
+  z-index: -1;
 }
 
-.greenButton{
+.tagDropdownStyle {
+  z-index: 1000;
+  margin-top:-30px;
+}
+
+.tagButton{
   margin: auto;
   height: 35px;
   width:35px;
-  background-color: #73AD21;
   border: none;
   color: white;
   cursor: pointer;
   font-size: 30px;
 }
-.confirmButton{
-  margin-top: -25px;
-  height: 20px;
-  width:20px;
+
+.addButton{
   background-color: #73AD21;
-  border: none;
-  color: white;
-  cursor: pointer;
 }
+.rmButton{
+  background-color: rgb(195, 1, 10);
+}
+.confirmButtonStyle{
+  background-color: #73AD21;
+}
+  
