@@ -13,3 +13,9 @@
 4. Namen der einzelnen Dateien ändern
 5. Nachfragen ob öffentliches Taggen gewünscht ist
     a) Wenn ja Suchseite und Tagging Seite verlinken
+
+6. Edit Funktion nochmals bearbeiten. Es gibt probleme mit dem auslesn von text bzw. wenn kein Text im Dropdown steht geht gar nchts mehr
+
+Bugs:
+    1. Wenn keine Tags vorhanden sind kann man keine neuen Tags hinzufügen --> siehe 5.
+    2. Wenn man nichts beim neuen Hinzufügen von Tags eingibt wird ein Tag (ich weiß noch nicht mit welchem Muster) gelöscht

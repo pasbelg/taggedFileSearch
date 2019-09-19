@@ -17,32 +17,33 @@ $tagList = getTags();
         inputVisibility = document.getElementsByClassName("tagInput" + id)[0];
         if (window.getComputedStyle(inputVisibility).visibility === "hidden"){
           document.getElementsByClassName("tagInput" + id)[0].style.visibility = "visible";
-          document.getElementsByClassName("greenButton")[0].style.visibility = "hidden";
           document.getElementsByClassName("confirmButton" + id)[0].style.visibility = "visible";
+          document.getElementsByClassName("tagDropdown" + id)[0].style.visibility = "hidden";
+          
         }
       }
       function showHideDropdown(id) {
         inputVisibility = document.getElementsByClassName("tagDropdown" + id)[0];
         if (window.getComputedStyle(inputVisibility).visibility === "hidden"){
           document.getElementsByClassName("tagDropdown" + id)[0].style.visibility = "visible";
-          document.getElementsByClassName("greenButton")[0].style.visibility = "hidden";
           document.getElementsByClassName("confirmButton" + id)[0].style.visibility = "visible";
+          document.getElementsByClassName("tagInput" + id)[0].style.visibility = "hidden";
         }
       }
       function editTag(id){
-          dropDown = document.getElementsByClassName("tagDropdown" + id)[0]
-          newTag = document.getElementsByClassName("tagInput" + id)[0].value;
-          existentTag = dropDown.options[dropDown.selectedIndex].text;
-          if(newTag){
+          dropDown = document.getElementsByClassName("tagDropdown" + id)[0];
+          if(document.getElementsByClassName("tagInput" + id)[0].value){
+          newTag =  document.getElementsByClassName("tagInput" + id)[0].value;
           $.ajax({
             url: 'functions/tagFunctions.php',
             data: {fileID: id, tag: newTag, action: 'add'},
             type: 'post',
             success: function(output) {
-              window.location.reload();
+              window.location.reload();s
             }
           });
           }else{
+            existentTag = dropDown.options[dropDown.selectedIndex].text;
             $.ajax({
             url: 'functions/tagFunctions.php',
             data: {fileID: id, tag: existentTag, action: 'rm'},
@@ -57,7 +58,7 @@ $tagList = getTags();
   </head>
   <body>
   <div class="center">
-  <table border="1" id="tagTable">
+  <table id="tagTable">
     <tr>
       <th>Datei</th>
       <th>bestehende Tags</th>
@@ -79,13 +80,19 @@ $tagList = getTags();
       $tagOption .= '<option value="">'.$tag.'</option>';
     }
     echo '<td class="editCell">
-    <input class="greenButton" type="button" onclick="showHideDropdown('.$fileID.')" value="-">
-    <input class="greenButton" type="button" onclick="showHideInput('.$fileID.')" value="+">
-    <input class="tagInput'.$fileID.'" style="visibility:hidden;"  type="text" name="nm">
-    <select class="tagDropdown'.$fileID.'" style="visibility:hidden;">
+    <input class="tagButton addButton" type="button" onclick="showHideInput('.$fileID.')" value="+">
+    <input class="tagButton rmButton" type="button" onclick="showHideDropdown('.$fileID.')" value="-">
+    <br>
+    <br>
+    <select class="tagDropdownStyle tagDropdown'.$fileID.'" style="visibility:hidden;">
+    <option disabled selected value>Bitte auswählen</option>
     '.$tagOption.'
     </select>
-    <input class="greenButton confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="🗸">  
+    <input class="tagInput'.$fileID.'" style="visibility:hidden;"  type="text" name="nm">
+    <br>
+    <br>
+    <input class="tagButton confirmButtonStyle confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="🗸">
+    
     </td>';
     $db->close();
     }
