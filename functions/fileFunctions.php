@@ -1,4 +1,13 @@
 <?php
+if (isset($_REQUEST['action'])) {
+    switch ($_POST['action']) {
+        case 'populate':
+            scanFilesAndAdd("files/");
+            break;
+    }
+}
+
+
 function addFilesToDB($file){
     $sqlAdd = 'INSERT INTO files (file) VALUEs (:filePath);';
     $conn  = new PDO('sqlite:search.db') or die("cannot open the database");
@@ -20,7 +29,6 @@ function scanFilesAndAdd($dir){
     
     foreach($files as $value){
         $path = $dir.DIRECTORY_SEPARATOR.$value;
-        //echo $path;
         if(!is_dir($path) && strpos("$value","pdf")) {
             addFilesToDB($path);
         } else if($value != "." && $value != "..") {
