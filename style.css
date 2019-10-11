@@ -71,11 +71,6 @@ input[type=text]:focus {
 
   border-radius: 0 0 5px 5px;
 }
-#searchResultBox label:hover{
-  overflow: visible;
-  font-size: 10px;
-  word-break: break-all;
-}
 
 
 #searchResultBox p{
