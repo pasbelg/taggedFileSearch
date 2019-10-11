@@ -1,3 +1,11 @@
+Deploy:
+1. Ordnerstruktur anpassen (suche = index.php, Datenbank im richtigen Ordner usw.)
+2. Unnötige Dateien löschen (oldSearch, functions/search.db , usw.)
+3. Neuanlegen der Datenbank ermöglichen 
+    a) repopulate schon möglich
+    b) komplettes löschen (struktur beibehalten) --> evtl. mit "Delete from Tabelle"
+4. .htaccess einrichten
+Programm
 1. Suchseite stylen
     a) Suchergebnisse mit schönem Hover effekt versehen
     b) Footer erstellen mit:
@@ -11,8 +19,8 @@
     b) Tabelle an sich schöner machen
 
 4. Namen der einzelnen Dateien ändern
-5. Nachfragen ob öffentliches Taggen gewünscht ist
-    a) Wenn ja Suchseite und Tagging Seite verlinken
+5. Nachfragen ob öffentliches Taggen gewünscht ist 
+    a) Wenn ja Suchseite und Tagging Seite verlinken --> Nicht verlinken
 
 6. Edit Funktion nochmals bearbeiten. Es gibt probleme mit dem auslesn von text bzw. wenn kein Text im Dropdown steht geht gar nchts mehr
 
