@@ -18,7 +18,7 @@ if (isset($_REQUEST['searchPhrase'])) {
     foreach($stmt->fetchAll() as $v) { 
         $result = implode($v);
         if (!strpos($html, $result)){
-            $html .= '<a title="'.basename($result, '.pdf').'" href="'.$result.'"><label>'.basename($result, '.pdf').'</label></a>';
+            $html .= '<a title="'.basename($result, '.pdf').'" target="_blank" href="'.$result.'"><label>'.basename($result, '.pdf').'</label></a>';
         }
         
     }
@@ -34,7 +34,7 @@ if (isset($_REQUEST['searchPhrase'])) {
     foreach($stmt->fetchAll() as $v) { 
         $result = implode($v);
         if (!strpos($html, $result)){
-            $html .= '<a title="test" href="'.$result.'"><label>'.basename($result, '.pdf').'</label></a>';
+            $html .= '<a title="'.basename($result, '.pdf').'" target="_blank" href="'.$result.'"><label>'.basename($result, '.pdf').'</label></a>';
         }
 }
 }
