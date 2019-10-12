@@ -1,4 +1,5 @@
 <?php
+require_once('functions/generalFunctions.php');
 if (isset($_REQUEST['action'])) {
     switch ($_POST['action']) {
         case 'populate':
