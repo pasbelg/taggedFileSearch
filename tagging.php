@@ -1,4 +1,6 @@
 <?php
+ini_set('error_reporting', E_ALL);
+//require_once('paths.php');
 require_once('functions/generalFunctions.php');
 require_once('functions/tagFunctions.php');
 $fileList = getFiles();

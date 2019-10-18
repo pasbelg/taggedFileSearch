@@ -1,6 +1,7 @@
 <?php
 require_once('generalFunctions.php');
 require_once('tagFunctions.php');
+require_once('paths.php');
 if (isset($_REQUEST['action'])) {
     switch ($_POST['action']) {
         case 'refill':

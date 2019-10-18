@@ -1,5 +1,6 @@
 <?php
 require_once('generalFunctions.php');
+require_once('paths.php');
 if(isset($_POST['tag']) AND !empty($_POST['tag'])){
     if($_POST['action'] == "add"){
         addTag($_POST['fileID'], $_POST['tag']);
@@ -119,16 +120,14 @@ function pathTagCreator(){
     }
     $conn=null;
 }
-
-pathTagger();
 function pathTagger(){
+    
     $fileList = getFiles();
     $tagList = getTags();
 
     $sqlAdd = 'INSERT INTO tagging (fileID, tagID) VALUES (:fileID, :tagID);';
     $conn  = new PDO('sqlite:'.DB_PATH.'') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     foreach($fileList as $fileID => $file){
         foreach($tagList as $tagID => $tag){
             if(strpos($file, $tag)){

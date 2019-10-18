@@ -1,3 +1,3 @@
 <?php
-define('DB_PATH', $_SERVER['DOCUMENT_ROOT'] . '/materialSuche/search.db');
+define('DB_PATH', realpath(dirname(__FILE__)).'/../search.db');
 ?>

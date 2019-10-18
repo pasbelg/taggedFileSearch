@@ -1,7 +1,6 @@
 <?php
-require_once('../paths.php');
+require_once('paths.php');
 function getFiles(){
-    
     $fileList = array();
     $db = new SQLite3(DB_PATH);
     $res = $db->query('SELECT fileID, file FROM files;');
@@ -48,7 +47,7 @@ function existenceCheck($table, $column, $value, $value1){
 }
 recreateDB();
 function recreateDB(){
-    unlink(DB_PATH) or die("Couldn't delete file");
+    unlink(''.DB_PATH.'');
     $sqlCreateFiles    = 'CREATE TABLE files(fileID INTEGER PRIMARY KEY, file VARCHAR NOT NULL);';
     $sqlCreateTags     = 'CREATE TABLE tags(tagID INTEGER PRIMARY KEY, tag VARCHAR NOT NULL);';
     $sqlCreateTagging  = 'CREATE TABLE IF NOT EXISTS "tagging" ("fileID" int not null, "tagID" int not null);';
