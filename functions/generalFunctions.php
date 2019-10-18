@@ -1,7 +1,9 @@
 <?php
+require_once('../paths.php');
 function getFiles(){
+    
     $fileList = array();
-    $db = new SQLite3('search.db');
+    $db = new SQLite3(DB_PATH);
     $res = $db->query('SELECT fileID, file FROM files;');
     while ($row = $res->fetchArray()) {
         $fileList[$row['fileID']] = $row['file'];
@@ -11,7 +13,7 @@ function getFiles(){
 }
 function getTags(){
     $tagList = array();
-    $db = new SQLite3('search.db');
+    $db = new SQLite3(DB_PATH);
     $res = $db->query('SELECT tagID, tag FROM tags;');
     while ($row = $res->fetchArray()) {
         $fileList[$row['tagID']] = $row['tag'];
@@ -20,9 +22,8 @@ function getTags(){
     return $fileList;
 }
 
-
 function existenceCheck($table, $column, $value, $value1){
-    $conn  = new PDO('sqlite:../search.db') or die("cannot open the database");
+    $conn  = new PDO('sqlite:'.DB_PATH.'') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     if(is_null($value1)) {
         $sqlCheck = 'select '.$column.' from '.$table.' where '.$column.' = :check;';
@@ -44,5 +45,21 @@ function existenceCheck($table, $column, $value, $value1){
     }
     $conn = null;
     return $result;
+}
+recreateDB();
+function recreateDB(){
+    unlink(DB_PATH) or die("Couldn't delete file");
+    $sqlCreateFiles    = 'CREATE TABLE files(fileID INTEGER PRIMARY KEY, file VARCHAR NOT NULL);';
+    $sqlCreateTags     = 'CREATE TABLE tags(tagID INTEGER PRIMARY KEY, tag VARCHAR NOT NULL);';
+    $sqlCreateTagging  = 'CREATE TABLE IF NOT EXISTS "tagging" ("fileID" int not null, "tagID" int not null);';
+    $sqlCreateCommands = array($sqlCreateFiles, $sqlCreateTags, $sqlCreateTagging);
+    
+    $conn  = new PDO('sqlite:'.DB_PATH.'') or die("cannot open the database");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    foreach($sqlCreateCommands as $sql){
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+    }
+    $conn = null;
 }
 ?>
