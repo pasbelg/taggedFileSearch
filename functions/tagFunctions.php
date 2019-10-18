@@ -1,7 +1,5 @@
 <?php
-error_reporting(E_ALL);
 require_once('generalFunctions.php');
-require_once('paths.php');
 if(isset($_POST['tag']) AND !empty($_POST['tag'])){
     if($_POST['action'] == "add"){
         addTag($_POST['fileID'], $_POST['tag']);
@@ -89,12 +87,11 @@ function rmTag($fileID, $input){
     $conn = NULL;
     echo 'Tag ' . $input . ' wurde erfolgreich gelöscht';
 }
+
 function pathTagCreator(){
-    
     $fileList = getFiles();
-    //print("<pre>".print_r($fileList,true)."</pre>");
     $sqlAdd = 'INSERT INTO tags (tag) VALUES (:tag);';
-    $conn  = new PDO('sqlite:search.db') or die("cannot open the database");
+    $conn  = new PDO('sqlite:'.DB_PATH.'') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     foreach($fileList as $filePath){
@@ -123,21 +120,19 @@ function pathTagCreator(){
     $conn=null;
 }
 
-
-//Bringt eingentlich gar nichts weil die Suche den Kompletten Sting in files durchsucht und dort auch das drinsteht was in den Tags steht... 
+pathTagger();
 function pathTagger(){
     $fileList = getFiles();
     $tagList = getTags();
 
     $sqlAdd = 'INSERT INTO tagging (fileID, tagID) VALUES (:fileID, :tagID);';
-    $conn  = new PDO('sqlite:search.db') or die("cannot open the database");
+    $conn  = new PDO('sqlite:'.DB_PATH.'') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     foreach($fileList as $fileID => $file){
         foreach($tagList as $tagID => $tag){
             if(strpos($file, $tag)){
                 if (!existenceCheck('tagging', 'fileID', $fileID, $tagID)){
-                    //echo 'tag muss noch verknüpft werden<br>';
                     try{
                         $stmt = $conn->prepare($sqlAdd);
                         $stmt->bindParam(':fileID', $fileID, PDO::PARAM_INT);
