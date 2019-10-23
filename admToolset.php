@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
         function refillDB() {
-            secCheck = confirm('Durch diese Funktion wird die Suche auf Werkseinstellungen zurückgesetzt (Alle manuellen änderungen gehen verloren). Sind sie Sicher?')
+            secCheck = confirm('Durch diese Funktion wird die Suche auf Werkseinstellungen zurückgesetzt (Alle manuellen Änderungen gehen verloren). Sind sie Sicher?')
             if (secCheck) {
                 document.getElementById("loadingScreen").style.display = "block";
                 $.ajax({
@@ -27,7 +27,7 @@
         }
 
         function renewTags() {
-            secCheck = confirm('Durch diese Funktion wird die Suche auf Werkseinstellungen zurückgesetzt (Alle manuellen änderungen gehen verloren). Sind sie Sicher?')
+            secCheck = confirm('Es werden alle manuell angelegten Tags gelöscht. Sind sie Sicher?')
             if (secCheck) {
                 document.getElementById("loadingScreen").style.display = "block";
                 $.ajax({
@@ -45,7 +45,6 @@
         }
 
         function scanNewFiles() {
-            if (secCheck) {
                 document.getElementById("loadingScreen").style.display = "block";
                 $.ajax({
                     url: 'functions/fileFunctions.php',
@@ -57,11 +56,10 @@
                         window.location.reload();
                     }
                 });
-            }
-
         }
 
         function recreateDB() {
+          secCheck = confirm('Durch diese Funktion wird die Suche auf Werkseinstellungen zurückgesetzt (Alle manuellen Änderungen gehen verloren). Sind sie Sicher?')
             if (secCheck) {
                 document.getElementById("loadingScreen").style.display = "block";
                 $.ajax({
