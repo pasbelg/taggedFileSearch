@@ -85,7 +85,7 @@
           <input type="submit" class="button" name="populate" value="Datenbank neu befüllen" onclick="refillDB()" />
           <input type="submit" class="button" name="populate" value="Tags neu anlegen" onclick="renewTags()" />
           <input type="submit" class="button" name="populate" value="Auf neue Dateien scannen" onclick="scanNewFiles()" />
-          <input type="submit" class="button" name="populate" value="Datenbank neu anlegen" onclick="scanNewFiles()" />
+          <input type="submit" class="button" name="populate" value="Datenbank neu anlegen" onclick="recreateDB()" />
         </div>
     </body>
 
