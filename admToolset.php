@@ -77,18 +77,16 @@
         }
     </script>
 </head>
-
-<body>
-    <div id="loadingScreen" style="display:none;">
-        <div id="loader"></div>
-    </div>
-
     <body>
-
-        <input type="submit" class="button" name="populate" value="Datenbank neu befüllen" onclick="refillDB()" />
-        <input type="submit" class="button" name="populate" value="Tags neu anlegen" onclick="renewTags()" />
-        <input type="submit" class="button" name="populate" value="Auf neue Dateien scannen" onclick="scanNewFiles()" />
-        <input type="submit" class="button" name="populate" value="Datenbank komplett neu anlegen" onclick="scanNewFiles()" />
+        <div id="loadingScreen" style="display:none;">
+            <div id="loader"></div>
+        </div>
+        <div id="admButtons">
+          <input type="submit" class="button" name="populate" value="Datenbank neu befüllen" onclick="refillDB()" />
+          <input type="submit" class="button" name="populate" value="Tags neu anlegen" onclick="renewTags()" />
+          <input type="submit" class="button" name="populate" value="Auf neue Dateien scannen" onclick="scanNewFiles()" />
+          <input type="submit" class="button" name="populate" value="Datenbank neu anlegen" onclick="scanNewFiles()" />
+        </div>
     </body>
 
 </html>
