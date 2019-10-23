@@ -77,42 +77,41 @@ $tagList = getTags();
                     <th>bestehende Tags</th>
                     <th>Tags bearbeiten</th>
                 </tr>
-                <?php
-    foreach($fileList as $fileID => $file){
-      $tagOption = "";
-      echo '<tr>
-              <td class="fileCell">'.basename($file, '.pdf').'</td>';
-      $tagsPerFile = array();
-      $db = new SQLite3('search.db');
-      $res = $db->query('select tag from files, tags, tagging where files.fileID = tagging.fileID AND tags.tagID = tagging.tagID AND tagging.fileID = '.$fileID.';');
-      while ($row = $res->fetchArray()) {
-         $tagsPerFile[] = $row['tag'];
-      }
-    echo '<td>'.implode(", ", $tagsPerFile).'</td>';
-    foreach($tagsPerFile as $tag){
-      $tagOption .= '<option value="">'.$tag.'</option>';
-    }
-    echo '
-    <td class="editCell">
-      <input class="tagButton addButton" type="button" onclick="showHideInput('.$fileID.')" value="+">
-      <input class="tagButton rmButton" type="button" onclick="showHideDropdown('.$fileID.')" value="-">
-      <br>
-      <br>
-      <select class="tagDropdownStyle tagDropdown'.$fileID.'" style="visibility:hidden;">
-          <option disabled selected value>Bitte auswählen</option>
-          '.$tagOption.'
-      </select>
-      <input class="tagInput'.$fileID.'" style="visibility:hidden;" type="text" name="nm">
-      <br>
-      <br>
-      <input class="tagButton confirmButtonStyle confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="🗸">
-    </td>
-    ';
-    $db->close();
-    }
-    ?>
+                  <?php
+                    foreach($fileList as $fileID => $file){
+                      $tagOption = "";
+                      echo '<tr>
+                              <td class="fileCell">'.basename($file, '.pdf').'</td>';
+                      $tagsPerFile = array();
+                      $db = new SQLite3('search.db');
+                      $res = $db->query('select tag from files, tags, tagging where files.fileID = tagging.fileID AND tags.tagID = tagging.tagID AND tagging.fileID = '.$fileID.';');
+                      while ($row = $res->fetchArray()) {
+                        $tagsPerFile[] = $row['tag'];
+                      }
+                    echo '<td>'.implode(", ", $tagsPerFile).'</td>';
+                    foreach($tagsPerFile as $tag){
+                      $tagOption .= '<option value="">'.$tag.'</option>';
+                    }
+                    echo '
+                    <td class="editCell">
+                      <input class="tagButton addButton" type="button" onclick="showHideInput('.$fileID.')" value="+">
+                      <input class="tagButton rmButton" type="button" onclick="showHideDropdown('.$fileID.')" value="-">
+                      <br>
+                      <br>
+                      <select class="tagDropdownStyle tagDropdown'.$fileID.'" style="visibility:hidden;">
+                          <option disabled selected value>Bitte auswählen</option>
+                          '.$tagOption.'
+                      </select>
+                      <input class="tagInput'.$fileID.'" style="visibility:hidden;" type="text" name="nm">
+                      <br>
+                      <br>
+                      <input class="tagButton confirmButtonStyle confirmButton'.$fileID.'" style="visibility:hidden;" type="button" onclick="editTag('.$fileID.')" value="🗸">
+                    </td>
+                    ';
+                    $db->close();
+                    }
+                  ?>
             </table>
         </div>
     </body>
-
-    </html>
+  </html>
