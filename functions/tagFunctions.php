@@ -1,27 +1,26 @@
 <?php
 require_once('generalFunctions.php');
 require_once('paths.php');
-if(isset($_POST['tag']) AND !empty($_POST['tag'])){
+if(isset($_POST['tag']) AND !empty($_POST['tag'])){ #Fängt den Klick auf + oder - in tagging.php ab um Tags hinzuzufügen oder zu entfernen
     if($_POST['action'] == "add"){
         addTag($_POST['fileID'], $_POST['tag']);
     }else{
         rmTag($_POST['fileID'], $_POST['tag']);
     }
 }
-function addTag($fileID, $input){
+function addTag($fileID, $input){ #Erstellt Tags auf Basis des eingegebenen Textes
     $db = new SQLite3('../search.db');
     $res = $db->query('select tagID from tags where tag = "'.$input.'";');
         while ($row = $res->fetchArray()) {
            $tagID = $row['tagID'];
         }
     $db->close();
-    $tagExists = existenceCheck('tags', 'tag', $input, NULL);
-    $tagConExists = existenceCheck('tagging', 'fileID', $fileID, $tagID);
+    $tagExists = existenceCheck('tags', 'tag', $input, NULL); #Überprüft ob Tag bereits existiert
+    $tagConExists = existenceCheck('tagging', 'fileID', $fileID, $tagID); #Überprüft ob Tag-Datei-Verbindung bereits besteht.
     if($tagExists AND $tagConExists){
         echo 'Tag ' . $input . ' ist bereits für die Datei angelegt';
-        //Fehler: Wenn Tag existiert aber Verbindung nicht besteht passiert gar ni
     } else if ($tagExists and !$tagConExists){
-        //Add Tag-File-Connection
+        //Stellt eine Verbindung zwischen Tags und Dateien her wenn Tag schon besteht.
         $conn  = new PDO('sqlite:../search.db') or die("cannot open the database");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
         $sqlAddCon = 'INSERT INTO tagging (fileID, tagID) VALUES (:fileID, :tagID);';
@@ -35,7 +34,7 @@ function addTag($fileID, $input){
             }
             $conn = NULL;
     } else {
-        //Add Tag to Tag-Table
+        //Erstellt einen Tag wenn er noch nicht existiert.
         $sqlAddTag = 'INSERT INTO tags (tag) VALUES (:tag);';
         $conn  = new PDO('sqlite:../search.db') or die("cannot open the database");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -46,7 +45,7 @@ function addTag($fileID, $input){
         }catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
-        //Add Tag-File-Connection
+        //Stellt eine Verbindung zwischen Tags und Dateien her.
         if (existenceCheck('tags', 'tag', $input, NULL)){
             $db = new SQLite3('../search.db');
             $res = $db->query('SELECT tagID FROM tags WHERE tag = "'.$input.'";');
@@ -67,7 +66,7 @@ function addTag($fileID, $input){
         }
     }
 }
-function rmTag($fileID, $input){
+function rmTag($fileID, $input){ #Löscht die Tag-Datei-Verbindung (Auf das Löschen des Tags wird verzichtet weil er noch an anderer Stelle gebraucht werden könnte).
     $db = new SQLite3('../search.db');
     $res = $db->query('SELECT tagID FROM tags WHERE tag = "'.$input.'";');
     while ($row = $res->fetchArray()) {
@@ -89,7 +88,7 @@ function rmTag($fileID, $input){
     echo 'Tag ' . $input . ' wurde erfolgreich gelöscht';
 }
 
-function pathTagCreator(){
+function pathTagCreator(){ #Erstellt Tags auf Basis des Pfades in dem sich die Datei befindet.
     $fileList = getFiles();
     $sqlAdd = 'INSERT INTO tags (tag) VALUES (:tag);';
     $conn  = new PDO('sqlite:'.DB_PATH.'') or die("cannot open the database");
@@ -98,12 +97,8 @@ function pathTagCreator(){
     foreach($fileList as $filePath){
             $pathParts = explode('/', dirname($filePath));
             foreach($pathParts as $pathPart){
-                
                 if (existenceCheck('tags', 'tag', $pathPart, NULL)){
                    echo 'tag existiert bereits <br>';
-                    /* if (!in_array($pathPart, $array)){
-                            $array[] = $pathPart; 
-                        }*/
                 } else {
                     if ($pathPart !== 'files'){
                         try{
@@ -120,11 +115,9 @@ function pathTagCreator(){
     }
     $conn=null;
 }
-function pathTagger(){
-    
+function pathTagger(){ #Erstellt Tag-Datei-Verbindungen auf Basis des Pfades in dem sich die Datei befindet.
     $fileList = getFiles();
     $tagList = getTags();
-
     $sqlAdd = 'INSERT INTO tagging (fileID, tagID) VALUES (:fileID, :tagID);';
     $conn  = new PDO('sqlite:'.DB_PATH.'') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

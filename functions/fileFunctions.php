@@ -2,6 +2,7 @@
 require_once('generalFunctions.php');
 require_once('tagFunctions.php');
 require_once('paths.php');
+// Checkt welche Anfragen von admToolset.php angekommen sind und führt die für die Anfrage nötigen Funktionen aus
 if (isset($_REQUEST['action'])) {
     switch ($_POST['action']) {
         case 'refill':
@@ -34,7 +35,7 @@ if (isset($_REQUEST['action'])) {
 }
 
 
-function addFilesToDB($file){
+function addFilesToDB($file){ #Fügt die im Verzeichnis gefundenen PDF-Dateien der Datenbank hinzu.
     $sqlAdd = 'INSERT INTO files (file) VALUES (:filePath);';
     $conn  = new PDO('sqlite:'.DB_PATH.'') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -51,7 +52,7 @@ function addFilesToDB($file){
     }
     $conn = null;
 }
-function scanFilesAndAdd($dir){
+function scanFilesAndAdd($dir){ #Scannt das Verziechnis files/ rekursiv nach PDF-Dateien.
     $files = scandir($dir);
     foreach($files as $value){
         $path = $dir.DIRECTORY_SEPARATOR.$value;
@@ -66,7 +67,7 @@ function scanFilesAndAdd($dir){
     }
 }
 
-function clearDB(array $dimensions){
+function clearDB(array $dimensions){ #Löscht die vom admToolset gewünschten Tabellen.
     $conn  = new PDO('sqlite:'.DB_PATH.'') or die("cannot open the database");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $tables = $dimensions;
